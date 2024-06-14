@@ -1,0 +1,108 @@
+extends layout
+
+block content
+  .container-fluid.h-100
+    .row.h-100
+      .side-bar.col-md-2
+        h2 Filters
+
+        .dropdown
+          button#versionsDropdown.btn.btn-light.dropdown-toggle(type='button', data-bs-toggle='dropdown', aria-expanded='true', aria-haspopup='true')
+            | Select Versions 
+          ul.dropdown-menu.checkbox-menu.allow-focus(aria-labelledby='versionsDropdown', id='versions')
+            a.clear(href="#", style="cursor: pointer; padding:10px", onclick="clearVersion()") clear
+        
+        .dropdown
+          button#issueDropdown.btn.btn-light.dropdown-toggle(type='button', data-bs-toggle='dropdown', aria-expanded='true', aria-haspopup='true')
+            | Select Issues 
+          ul.dropdown-menu.checkbox-menu.allow-focus(aria-labelledby='issueDropdown', id='issues')
+            a.clear(href="#", style="cursor: pointer; padding:10px", onclick="clearIssues()") clear
+        
+        button.btn.btn-success(type='button' data-bs-toggle='modal' data-bs-target='#tableModal' style="width:100%")
+          | View User Reviews
+        
+        #tableModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='tableModalLabel', aria-hidden='true')
+          .modal-dialog.modal-dialog-centered.modal-dialog-scrollable
+            .modal-content
+              .modal-header
+                h5#tableModalLabel.modal-title User Reviews
+                button.close(type='button', data-bs-dismiss='modal', aria-label='Close')
+                  span(aria-hidden='true') ❌
+              .modal-body
+                table#myTable(style="width:100%")
+
+
+
+      .main-content.col-md-10
+        .card.h-25#health
+          .card-header
+            h2 Health Metrics
+          
+          .card-body.row
+            .col-md-3
+              h2 Sentiment
+              h3#sentiment
+            .col-md-3
+              h2 Toxicity
+              h3#toxicity
+            .col-md-3
+              h2 Rating
+              h3#rating
+            .col-md-3
+              h2 Issues
+              h3#issuesCount
+            
+        .row#Graphs
+          //- menu bar thing
+          ul.nav.nav-tabs
+            li.nav-item
+              button#issuesDist-tab.nav-link.active(data-bs-toggle='tab', data-bs-target='#issuesDist', type='button', role='tab', aria-controls='issuesDist', aria-selected='true') Issues Distribution
+
+            li.nav-item
+              button#userIssues-tab.nav-link(data-bs-toggle='tab', data-bs-target='#userIssues', type='button', role='tab', aria-controls='userIssues', aria-selected='true') Trend of User Issues
+
+            li.nav-item
+              button#userSentiment-tab.nav-link(data-bs-toggle='tab', data-bs-target='#userSentiment', type='button', role='tab', aria-controls='userSentiment', aria-selected='false') Trend of User Sentiment
+            
+            li.nav-item
+              button#codeSmells-tab.nav-link(data-bs-toggle='tab', data-bs-target='#codeSmells', type='button', role='tab', aria-controls='codeSmells', aria-selected='false') Trend of Code Smells
+
+          .tab-content
+            #issuesDist.tab-pane.fade.show.active(role='tabpanel', aria-labelledby='issuesDist-tab')
+              canvas#issuesDistChart
+
+            #userIssues.tab-pane.fade(role='tabpanel', aria-labelledby='userIssues-tab')
+              canvas#issuesChart
+            
+            #userSentiment.tab-pane.fade(role='tabpanel', aria-labelledby='userSentiment-tab')
+              .carousel.slide(data-bs-ride='carousel' data-bs-interval='false')
+                .carousel-inner
+                  .carousel-item.active
+                    canvas#ratingChart
+                  .carousel-item
+                    canvas#sentimentChart
+                  .carousel-item
+                    canvas#toxicityChart
+                button.carousel-control-prev(type='button', data-bs-target='.carousel', data-bs-slide='prev')
+                  span.carousel-control-prev-icon(aria-hidden='true')
+                button.carousel-control-next(type='button', data-bs-target='.carousel', data-bs-slide='next')
+                  span.carousel-control-next-icon(aria-hidden='true')
+                  
+
+            
+            #codeSmells.tab-pane.fade(role='tabpanel', aria-labelledby='codeSmells-tab')
+              .carousel.slide(data-bs-ride='carousel' data-bs-interval='false' id='carousel-smells')
+                .carousel-inner
+                  .carousel-item.active
+                    canvas#packageSmells
+                  .carousel-item
+                    canvas#methodSmells
+                  .carousel-item
+                    canvas#classSmells
+                button.carousel-control-prev(type='button', data-bs-target='#carousel-smells', data-bs-slide='prev')
+                  span.carousel-control-prev-icon(aria-hidden='true')
+                button.carousel-control-next(type='button', data-bs-target='#carousel-smells', data-bs-slide='next')
+                  span.carousel-control-next-icon(aria-hidden='true')
+
+  script(src="/javascripts/script.js")
+ 
